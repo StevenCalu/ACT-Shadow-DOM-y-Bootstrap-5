@@ -2,6 +2,7 @@ class CalculadoraBasica extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.historial = [];
     this.shadowRoot.innerHTML = `
       <link rel="stylesheet" href="/public/lib/bootstrap-5.3.6-dist/css/bootstrap.min.css">
       <div class="container mt-4">
@@ -52,6 +53,40 @@ class CalculadoraBasica extends HTMLElement {
     let operacion = this.shadowRoot.getElementById('op').value;
     let resultado = this.shadowRoot.getElementById('res');
     let historial = this.shadowRoot.getElementById('histo');
+
+    if (n1 === '' || n2 === '') {
+      resultado.innerHTML = '<p class="text-danger">Digite números en las casillas</p>';
+      return;
+    }
+
+    let res = 0;
+    let simbolo = '';
+
+    switch (operacion) {
+      case 'suma':
+        res = n1 + n2;
+        simbolo = '+';
+        break;
+      case 'resta':
+        res = n1 - n2;
+        simbolo = '-';
+        break;
+      case 'multi':
+        res = n1 * n2;
+        simbolo = '*';
+        break;
+      case 'divi':
+        if (n2 === 0) {
+          resultado.innerHTML = '<p class="text-danger">No se puede dividir para 0</p>';
+          return;
+        }
+        res = n1 / n2;
+        simbolo = '/';
+        break;
+    }
+
+    resultado.innerHTML = `<p class="fw-semibold">Resultado: ${res}</p>`;
   }
 }
 
+customElements.define('calculadora-basica', CalculadoraBasica);
