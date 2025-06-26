@@ -13,7 +13,7 @@ class CalculadoraBasica extends HTMLElement {
           <div class="card-body">
             <form class="row gy-2 gx-3 align-items-center justify-content-center">
               <div class="col-sm-3">
-                <input type="number" id="num1" class="form-control" placeholder="Número 1">
+                <input type="number" id="num1" class="form-control" placeholder="Numero 1">
               </div>
               <div class="col-sm-2">
                 <select id="op" class="form-select">
@@ -24,7 +24,7 @@ class CalculadoraBasica extends HTMLElement {
                 </select>
               </div>
               <div class="col-sm-3">
-                <input type="number" id="num2" class="form-control" placeholder="Número 2">
+                <input type="number" id="num2" class="form-control" placeholder="Numero 2">
               </div>
               <div class="col-sm-3">
                 <button type="button" id="btn" class="btn btn-success w-100">Calcular</button>
@@ -55,9 +55,12 @@ class CalculadoraBasica extends HTMLElement {
     let historial = this.shadowRoot.getElementById('histo');
 
     if (n1 === '' || n2 === '') {
-      resultado.innerHTML = '<p class="text-danger">Digite números en las casillas</p>';
+      resultado.innerHTML = '<p class="text-danger">Digite numeros en las casillas </p>';
       return;
     }
+
+    n1 = parseFloat(n1);
+    n2 = parseFloat(n2);
 
     let res = 0;
     let simbolo = '';
@@ -86,6 +89,18 @@ class CalculadoraBasica extends HTMLElement {
     }
 
     resultado.innerHTML = `<p class="fw-semibold">Resultado: ${res}</p>`;
+
+
+    let resulta = n1 + ' ' + simbolo + ' ' + n2 + ' = ' + res;
+    this.historial.push(resulta);
+
+    historial.innerHTML = '';
+    for (let i = this.historial.length - 1; i >= 0; i--) {
+      let lista = document.createElement('li');
+      lista.className = 'list-group-item';
+      lista.textContent = this.historial[i];
+      historial.appendChild(lista);
+    }
   }
 }
 
